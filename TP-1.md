@@ -106,90 +106,82 @@ port pc : 443
 
 ☀️ **Requêtes DNS**
 
-Déterminer...
+```
+[bastien@fedora ~]$ host www.ynov.com
+www.ynov.com has address 104.26.10.233
+www.ynov.com has address 172.67.74.226
+www.ynov.com has address 104.26.11.233
+www.ynov.com has IPv6 address 2606:4700:20::ac43:4ae2
+www.ynov.com has IPv6 address 2606:4700:20::681a:ae9
+www.ynov.com has IPv6 address 2606:4700:20::681a:be9
+```
 
-- à quelle adresse IP correspond le nom de domaine `www.ynov.com`
-
-> Ca s'appelle faire un "lookup DNS".
-
-- à quel nom de domaine correspond l'IP `174.43.238.89`
-
-> Ca s'appelle faire un "reverse lookup DNS".
+```
+[bastien@fedora ~]$ host 174.43.238.89
+89.238.43.174.in-addr.arpa domain name pointer 89.sub-174-43-238.myvzw.com.
+```
 
 ---
 
 ☀️ **Hop hop hop**
 
-Déterminer...
+```
+[bastien@fedora ~]$ traceroute www.ynov.com
+traceroute to www.ynov.com (104.26.11.233), 30 hops max, 60 byte packets
+ 1  _gateway (10.33.79.254)  6.426 ms  6.382 ms  6.372 ms
+ 2  145.117.7.195.rev.sfr.net (195.7.117.145)  1.339 ms  1.326 ms  1.316 ms
+ 3  * * *
+ 4  196.224.65.86.rev.sfr.net (86.65.224.196)  3.650 ms  6.822 ms  3.630 ms
+ 5  68.150.6.194.rev.sfr.net (194.6.150.68)  35.630 ms  35.623 ms 12.148.6.194.rev.sfr.net (194.6.148.12)  11.148 ms
+ 6  12.148.6.194.rev.sfr.net (194.6.148.12)  11.931 ms 68.150.6.194.rev.sfr.net (194.6.150.68)  34.349 ms  34.339 ms
+ 7  141.101.67.48 (141.101.67.48)  9.866 ms  9.834 ms  10.495 ms
+ 8  141.101.67.54 (141.101.67.54)  13.148 ms 172.71.132.4 (172.71.132.4)  9.610 ms 172.71.120.4 (172.71.120.4)  10.667 ms
+ 9  104.26.11.233 (104.26.11.233)  9.603 ms  9.596 ms  9.589 ms
+```
 
-- par combien de machines vos paquets passent quand vous essayez de joindre `www.ynov.com`
-
+Passe par 9 machines.
 ---
 
 ☀️ **IP publique**
 
-Déterminer...
-
-- l'adresse IP publique de la passerelle du réseau (le routeur d'YNOV donc si vous êtes dans les locaux d'YNOV quand vous faites le TP)
+```
+[bastien@fedora ~]$ curl ifconfig.me
+195.7.117.146
+```
 
 ---
 
 ☀️ **Scan réseau**
 
-Déterminer...
-
-- combien il y a de machines dans le LAN auquel vous êtes connectés
-
-> Allez-y mollo, on va vite flood le réseau sinon. :)
-
-![Stop it](./img/stop.png)
+```
+[bastien@fedora ~]$ sudo nmap -sn 10.33.71.104/20
+Nmap done: 4096 IP addresses (859 hosts up) scanned in 510.69 seconds
+```
 
 # III. Le requin
-
-Faites chauffer Wireshark. Pour chaque point, je veux que vous me livrez une capture Wireshark, format `.pcap` donc.
-
-Faites *clean* 🧹, vous êtes des grands now :
-
-- livrez moi des captures réseau avec uniquement ce que je demande et pas 40000 autres paquets autour
-  - vous pouvez sélectionner seulement certains paquets quand vous enregistrez la capture dans Wireshark
-- stockez les fichiers `.pcap` dans le dépôt git et côté rendu Markdown, vous me faites un lien vers le fichier, c'est cette syntaxe :
-
-```markdown
-[Lien vers capture ARP](./captures/arp.pcap)
-```
 
 ---
 
 ☀️ **Capture ARP**
 
-- 📁 fichier `arp.pcap`
-- capturez un échange ARP entre votre PC et la passerelle du réseau
+[Arp request](Arp_request.pcapng)
 
-> Si vous utilisez un filtre Wireshark pour mieux voir ce trafic, précisez-le moi dans le compte-rendu.
-
----
 
 ☀️ **Capture DNS**
 
-- 📁 fichier `dns.pcap`
-- capturez une requête DNS vers le domaine de votre choix et la réponse
-- vous effectuerez la requête DNS en ligne de commande
+```
+[bastien@fedora ~]$ host crunchyroll.com
+```
 
-> Si vous utilisez un filtre Wireshark pour mieux voir ce trafic, précisez-le moi dans le compte-rendu.
+[Crunchyroll](DNS_Request_crunchyroll.pcapng)
 
 ---
 
 ☀️ **Capture TCP**
 
-- 📁 fichier `tcp.pcap`
-- effectuez une connexion qui sollicite le protocole TCP
-- je veux voir dans la capture :
-  - un 3-way handshake
-  - un peu de trafic
-  - la fin de la connexion TCP
-
-> Si vous utilisez un filtre Wireshark pour mieux voir ce trafic, précisez-le moi dans le compte-rendu.
-
+```
+[Tcp try handshake](Tcp_Crunchyroll.pcapng)
+```
 ---
 
 ![Packet sniffer](img/wireshark.jpg)
